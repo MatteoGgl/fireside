@@ -23,12 +23,20 @@
                             <div class="content">
                                 <a href="/link/{link.ID}" use:inertia>
                                     <strong>{link.Title}</strong>
-                                    {#if link.Type === "link"}
-                                        <span class="is-size-7 has-text-grey"
-                                            >{link.URL.String}</span
-                                        >
-                                    {/if}
                                 </a>
+                                {#if link.Type === "link"}
+                                    <a
+                                        href={link.URL.String}
+                                        target="_blank"
+                                        rel="noopener nofollow noreferrer"
+                                    >
+                                        <span
+                                            class="is-size-7 has-text-grey tag is-link is-light"
+                                        >
+                                            {link.URL.String}
+                                        </span>
+                                    </a>
+                                {/if}
                                 <nav class="level mt-3">
                                     <div class="level-left">
                                         {#each link.Tags as tag}
