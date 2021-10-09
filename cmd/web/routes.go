@@ -7,15 +7,16 @@ import (
 	"github.com/justinas/alice"
 )
 
-func (app *application) logRequest(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		app.logger.Printf("%s - %s %s %s", r.RemoteAddr, r.Proto, r.Method, r.URL.RequestURI())
-		next.ServeHTTP(w, r)
-	})
-}
 
 func (app *application) routes() *httprouter.Router {
-	standardMiddleware := alice.New(app.logRequest, app.inertia.Middleware)
+	standardMiddleware := alice.New(
+		app.recoverPanic,
+		app.logRequest,
+		app.inertia.Middleware,
+		secureHeaders,
+		app.session.Enable,
+		app.authenticate,
+	)
 
 	router := httprouter.New()
 
@@ -27,6 +28,7 @@ func (app *application) routes() *httprouter.Router {
 
 	router.Handler(http.MethodGet, "/login", standardMiddleware.ThenFunc(app.loginFormHandler))
 	router.Handler(http.MethodPost, "/login", standardMiddleware.ThenFunc(app.loginHandler))
+	router.Handler(http.MethodPost, "/logout", standardMiddleware.Append(app.requireAuthentication).ThenFunc(app.logoutHandler))
 
 	fileServer := http.FileServer(http.Dir("ui/static/"))
 	router.Handler(http.MethodGet, "/static/*path", standardMiddleware.Then(http.StripPrefix("/static", fileServer)))

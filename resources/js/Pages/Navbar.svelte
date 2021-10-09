@@ -1,5 +1,10 @@
 <script>
-    import { inertia } from "@inertiajs/inertia-svelte";
+    import { Inertia } from "@inertiajs/inertia";
+    import { inertia, page } from "@inertiajs/inertia-svelte";
+
+    function logout() {
+        Inertia.post("/logout");
+    }
 </script>
 
 <nav
@@ -13,6 +18,13 @@
         </div>
     </div>
     <div class="navbar-item ml-auto">
-        <a href="/login" use:inertia>Log in</a>
+        {#if $page.props.isAuthenticated}
+            <a href="/links/new" class="mr-3 button is-ghost" use:inertia>Post</a>
+            <form action="POST" on:submit|preventDefault={logout}>
+                <button type="submit" class="button is-ghost">Logout</button>
+            </form>
+        {:else}
+            <a href="/login" class="button is-ghost" use:inertia>Log in</a>
+        {/if}
     </div>
 </nav>

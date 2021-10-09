@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/golangcollege/sessions"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"github.com/matteoggl/linki/internal/data"
@@ -33,9 +34,10 @@ type config struct {
 
 type application struct {
 	config  config
-	logger  *log.Logger
 	inertia *inertia.Inertia
+	logger  *log.Logger
 	models  data.Models
+	session *sessions.Session
 }
 
 func main() {
@@ -56,11 +58,20 @@ func main() {
 	rootTemplate := "./ui/app.tmpl"
 	inertiaManager := inertia.New(cfg.url, rootTemplate, version)
 
+	secret := os.Getenv("LINKI_SECRET")
+	if secret == "" {
+		logger.Fatal("LINKI_SECRET must not be empty")
+	}
+	session := sessions.New([]byte(secret))
+	session.Lifetime = 12 * time.Hour
+	session.Secure = true
+
 	app := &application{
 		config:  cfg,
-		logger:  logger,
 		inertia: inertiaManager,
+		logger:  logger,
 		models: data.NewModels(db),
+		session: session,
 	}
 
 	srv := &http.Server{
@@ -82,37 +93,37 @@ func initConfig(cfg *config) {
 		log.Fatal("error loading .env file")
 	}
 
-	port, err := strconv.Atoi(os.Getenv("LINKS_PORT"))
+	port, err := strconv.Atoi(os.Getenv("LINKI_PORT"))
 	if err != nil {
 		log.Fatal(err)
 	}
 	cfg.port = port
 
-	cfg.url = os.Getenv("LINKS_URL")
+	cfg.url = os.Getenv("LINKI_URL")
 	if cfg.url == "" {
 		cfg.url = fmt.Sprintf("http://localhost:%d", cfg.port)
 	}
 
-	cfg.env = os.Getenv("LINKS_ENV")
+	cfg.env = os.Getenv("LINKI_ENV")
 	if cfg.env == "" {
 		cfg.env = "development"
 	}
 
-	cfg.db.dsn = os.Getenv("LINKS_DB_DSN")
+	cfg.db.dsn = os.Getenv("LINKI_DB_DSN")
 
-	maxOpenConns, err := strconv.Atoi(os.Getenv("LINKS_DB_MAX_OPEN_CONNS"))
+	maxOpenConns, err := strconv.Atoi(os.Getenv("LINKI_DB_MAX_OPEN_CONNS"))
 	if err != nil {
 		log.Fatal(err)
 	}
 	cfg.db.maxOpenConns = maxOpenConns
 
-	maxIdleConns, err := strconv.Atoi(os.Getenv("LINKS_DB_MAX_IDLE_CONNS"))
+	maxIdleConns, err := strconv.Atoi(os.Getenv("LINKI_DB_MAX_IDLE_CONNS"))
 	if err != nil {
 		log.Fatal(err)
 	}
 	cfg.db.maxIdleConns = maxIdleConns
 
-	cfg.db.maxIdleTime = os.Getenv("LINKS_DB_MAX_IDLE_TIME")
+	cfg.db.maxIdleTime = os.Getenv("LINKI_DB_MAX_IDLE_TIME")
 }
 
 func openDB(cfg config) (*sql.DB, error) {
