@@ -25,6 +25,9 @@ func (app *application) routes() *httprouter.Router {
 	router.Handler(http.MethodGet, "/link/:id", standardMiddleware.ThenFunc(app.showHandler))
 	router.Handler(http.MethodGet, "/tag/:tag", standardMiddleware.ThenFunc(app.byTagHandler))
 
+	router.Handler(http.MethodGet, "/login", standardMiddleware.ThenFunc(app.loginFormHandler))
+	router.Handler(http.MethodPost, "/login", standardMiddleware.ThenFunc(app.loginHandler))
+
 	fileServer := http.FileServer(http.Dir("ui/static/"))
 	router.Handler(http.MethodGet, "/static/*path", standardMiddleware.Then(http.StripPrefix("/static", fileServer)))
 

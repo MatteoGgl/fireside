@@ -58,3 +58,15 @@ func (app *application) byTagHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func (app *application) loginFormHandler(w http.ResponseWriter, r *http.Request) {
+	err := app.inertia.Render(w, r, "Login", nil)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+}
+
+func (app *application) loginHandler(w http.ResponseWriter, r *http.Request) {
+
+}
