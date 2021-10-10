@@ -42,7 +42,7 @@
                                     <div class="level-left">
                                         {#each link.Tags as tag}
                                             <div class="level-item">
-                                                <Link href="/tag/{tag}">
+                                                <Link href={route("links.tag", {tag: tag})}>
                                                     <span class="tag"
                                                         >{tag}</span
                                                     >

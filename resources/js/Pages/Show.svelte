@@ -1,8 +1,9 @@
 <script>
     import Layout from "./Layout.svelte";
     import { page, Link } from "@inertiajs/inertia-svelte";
+    import { route } from "../stores.js"
 
-    let link = $page.props.link;
+    $: link = $page.props.link;
 </script>
 
 <svelte:head>
@@ -37,13 +38,17 @@
 
                             <nav class="level my-4">
                                 <div class="level-left">
-                                    {#each link.Tags as tag}
-                                        <div class="level-item">
-                                            <Link href="/tag/{tag}">
-                                                <span class="tag">{tag}</span>
-                                            </Link>
-                                        </div>
-                                    {/each}
+                                    {#if link.Tags.length}
+                                        {#each link.Tags as tag}
+                                            <div class="level-item">
+                                                <Link href={route("links.tag", {tag: tag})}>
+                                                    <span class="tag"
+                                                        >{tag}</span
+                                                    >
+                                                </Link>
+                                            </div>
+                                        {/each}
+                                    {/if}
                                 </div>
                             </nav>
 

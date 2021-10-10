@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/lib/pq"
+	"github.com/matteoggl/linki/internal/validator"
 )
 
 type Link struct {
@@ -16,6 +17,17 @@ type Link struct {
 	Likes     int64
 	Tags      []string
 	CreatedAt time.Time
+}
+
+func ValidateLink(v *validator.Validator, link *Link) {
+	v.Check(link.Title != "", "title", "Title must be provided")
+	v.Check(link.Type == "link" || link.Type == "text", "type", "Unspecified type")
+	if link.Type == "link" {
+		v.Check(link.URL.Valid, "url", "URL must be specified")
+	}
+	if link.Type == "text" {
+		v.Check(link.Content.Valid, "content", "Content must be specified")
+	}
 }
 
 type LinkModel struct {
@@ -60,7 +72,15 @@ func (l *LinkModel) All() ([]*Link, error) {
 	return links, nil
 }
 
-func (l *LinkModel) Get(id int64) (*Link, error) {
+func (l LinkModel) Insert(link *Link) error {
+	stmt := `INSERT INTO links (title, type, url, content, tags)
+	VALUES ($1, $2, $3, $4, $5)
+	RETURNING id, created_at`
+
+	return l.DB.QueryRow(stmt, &link.Title, &link.Type, &link.URL, &link.Content, pq.Array(&link.Tags)).Scan(&link.ID, &link.CreatedAt)
+}
+
+func (l LinkModel) Get(id int64) (*Link, error) {
 	stmt := `SELECT id, title, type, url, content, likes, tags, created_at
 	FROM links
 	WHERE id = $1`
@@ -84,7 +104,7 @@ func (l *LinkModel) Get(id int64) (*Link, error) {
 	return &link, nil
 }
 
-func (l *LinkModel) ByTag(tag string) ([]*Link, error) {
+func (l LinkModel) ByTag(tag string) ([]*Link, error) {
 	stmt := `SELECT id, title, type, url, content, likes, tags, created_at
 	FROM links
 	WHERE $1 = ANY (tags)
