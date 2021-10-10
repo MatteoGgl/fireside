@@ -4170,6 +4170,172 @@ var Create = /*#__PURE__*/function (_SvelteComponent) {
 
 /***/ }),
 
+/***/ "./resources/js/Pages/DarkMode.svelte":
+/*!********************************************!*\
+  !*** ./resources/js/Pages/DarkMode.svelte ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var svelte_internal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! svelte/internal */ "./node_modules/svelte/internal/index.mjs");
+/* harmony import */ var svelte__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! svelte */ "./node_modules/svelte/index.mjs");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+/* resources/js/Pages/DarkMode.svelte generated by Svelte v3.43.1 */
+
+
+
+function create_fragment(ctx) {
+  var button;
+  var t_value = (
+  /*currentTheme*/
+  ctx[0] ===
+  /*THEMES*/
+  ctx[1].DARK ? "Light" : "Dark") + "";
+  var t;
+  var mounted;
+  var dispose;
+  return {
+    c: function c() {
+      button = (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.element)("button");
+      t = (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.text)(t_value);
+      (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.attr)(button, "class", "button");
+    },
+    m: function m(target, anchor) {
+      (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.insert)(target, button, anchor);
+      (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.append)(button, t);
+
+      if (!mounted) {
+        dispose = (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.listen)(button, "click",
+        /*toggleTheme*/
+        ctx[2]);
+        mounted = true;
+      }
+    },
+    p: function p(ctx, _ref) {
+      var _ref2 = _slicedToArray(_ref, 1),
+          dirty = _ref2[0];
+
+      if (dirty &
+      /*currentTheme*/
+      1 && t_value !== (t_value = (
+      /*currentTheme*/
+      ctx[0] ===
+      /*THEMES*/
+      ctx[1].DARK ? "Light" : "Dark") + "")) (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.set_data)(t, t_value);
+    },
+    i: svelte_internal__WEBPACK_IMPORTED_MODULE_0__.noop,
+    o: svelte_internal__WEBPACK_IMPORTED_MODULE_0__.noop,
+    d: function d(detaching) {
+      if (detaching) (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.detach)(button);
+      mounted = false;
+      dispose();
+    }
+  };
+}
+
+var STORAGE_KEY = "theme";
+var DARK_PREFERENCE = "(prefers-color-scheme: dark)";
+
+function instance($$self, $$props, $$invalidate) {
+  (0,svelte__WEBPACK_IMPORTED_MODULE_1__.onMount)(function () {
+    applyTheme();
+    window.matchMedia(DARK_PREFERENCE).addEventListener("change", applyTheme);
+  });
+  var THEMES = {
+    DARK: "dark",
+    LIGHT: "light"
+  };
+  var currentTheme = undefined;
+
+  var prefersDarkTheme = function prefersDarkTheme() {
+    return window.matchMedia(DARK_PREFERENCE).matches;
+  };
+
+  var toggleTheme = function toggleTheme() {
+    var stored = localStorage.getItem(STORAGE_KEY);
+
+    if (stored) {
+      localStorage.removeItem(STORAGE_KEY);
+    } else {
+      localStorage.setItem(STORAGE_KEY, prefersDarkTheme() ? THEMES.LIGHT : THEMES.DARK);
+    }
+
+    applyTheme();
+  };
+
+  var applyTheme = function applyTheme() {
+    var _localStorage$getItem;
+
+    var preferredTheme = prefersDarkTheme() ? THEMES.DARK : THEMES.LIGHT;
+    $$invalidate(0, currentTheme = (_localStorage$getItem = localStorage.getItem(STORAGE_KEY)) !== null && _localStorage$getItem !== void 0 ? _localStorage$getItem : preferredTheme);
+
+    if (currentTheme === THEMES.DARK) {
+      document.body.classList.remove(THEMES.LIGHT);
+      document.body.classList.add(THEMES.DARK);
+    } else {
+      document.body.classList.remove(THEMES.DARK);
+      document.body.classList.add(THEMES.LIGHT);
+    }
+  };
+
+  return [currentTheme, THEMES, toggleTheme];
+}
+
+var DarkMode = /*#__PURE__*/function (_SvelteComponent) {
+  _inherits(DarkMode, _SvelteComponent);
+
+  var _super = _createSuper(DarkMode);
+
+  function DarkMode(options) {
+    var _this;
+
+    _classCallCheck(this, DarkMode);
+
+    _this = _super.call(this);
+    (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.init)(_assertThisInitialized(_this), options, instance, create_fragment, svelte_internal__WEBPACK_IMPORTED_MODULE_0__.safe_not_equal, {});
+    return _this;
+  }
+
+  return DarkMode;
+}(svelte_internal__WEBPACK_IMPORTED_MODULE_0__.SvelteComponent);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DarkMode);
+
+/***/ }),
+
 /***/ "./resources/js/Pages/Error.svelte":
 /*!*****************************************!*\
   !*** ./resources/js/Pages/Error.svelte ***!
@@ -5632,6 +5798,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
 /* harmony import */ var _inertiajs_inertia_svelte__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia-svelte */ "./node_modules/@inertiajs/inertia-svelte/src/index.js");
 /* harmony import */ var _stores_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../stores.js */ "./resources/js/stores.js");
+/* harmony import */ var _DarkMode_svelte__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./DarkMode.svelte */ "./resources/js/Pages/DarkMode.svelte");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -5668,6 +5835,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 function create_else_block(ctx) {
   var a;
   var t;
@@ -5698,7 +5866,7 @@ function create_else_block(ctx) {
       dispose();
     }
   };
-} // (22:8) {#if $page.props.isAuthenticated}
+} // (23:8) {#if $page.props.isAuthenticated}
 
 
 function create_if_block(ctx) {
@@ -5755,6 +5923,9 @@ function create_fragment(ctx) {
   var inertia_action;
   var t1;
   var div2;
+  var t2;
+  var darkmode;
+  var current;
   var mounted;
   var dispose;
 
@@ -5767,6 +5938,7 @@ function create_fragment(ctx) {
 
   var current_block_type = select_block_type(ctx, -1);
   var if_block = current_block_type(ctx);
+  darkmode = new _DarkMode_svelte__WEBPACK_IMPORTED_MODULE_4__["default"]({});
   return {
     c: function c() {
       nav = (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.element)("nav");
@@ -5777,6 +5949,8 @@ function create_fragment(ctx) {
       t1 = (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.space)();
       div2 = (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.element)("div");
       if_block.c();
+      t2 = (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.space)();
+      (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.create_component)(darkmode.$$.fragment);
       (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.attr)(a, "class", "is-size-4");
       (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.attr)(a, "href", a_href_value = (0,_stores_js__WEBPACK_IMPORTED_MODULE_3__.route)('index'));
       (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.attr)(div0, "class", "navbar-item");
@@ -5795,6 +5969,9 @@ function create_fragment(ctx) {
       (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.append)(nav, t1);
       (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.append)(nav, div2);
       if_block.m(div2, null);
+      (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.append)(div2, t2);
+      (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.mount_component)(darkmode, div2, null);
+      current = true;
 
       if (!mounted) {
         dispose = (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.action_destroyer)(inertia_action = _inertiajs_inertia_svelte__WEBPACK_IMPORTED_MODULE_2__.inertia.call(null, a));
@@ -5813,15 +5990,23 @@ function create_fragment(ctx) {
 
         if (if_block) {
           if_block.c();
-          if_block.m(div2, null);
+          if_block.m(div2, t2);
         }
       }
     },
-    i: svelte_internal__WEBPACK_IMPORTED_MODULE_0__.noop,
-    o: svelte_internal__WEBPACK_IMPORTED_MODULE_0__.noop,
+    i: function i(local) {
+      if (current) return;
+      (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.transition_in)(darkmode.$$.fragment, local);
+      current = true;
+    },
+    o: function o(local) {
+      (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.transition_out)(darkmode.$$.fragment, local);
+      current = false;
+    },
     d: function d(detaching) {
       if (detaching) (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.detach)(nav);
       if_block.d();
+      (0,svelte_internal__WEBPACK_IMPORTED_MODULE_0__.destroy_component)(darkmode);
       mounted = false;
       dispose();
     }
@@ -9183,10 +9368,10 @@ module.exports = isEqual;
 
 /***/ }),
 
-/***/ "./resources/css/app.css":
-/*!*******************************!*\
-  !*** ./resources/css/app.css ***!
-  \*******************************/
+/***/ "./resources/css/app.scss":
+/*!********************************!*\
+  !*** ./resources/css/app.scss ***!
+  \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -12154,6 +12339,7 @@ module.exports = function getSideChannel() {
 
 var map = {
 	"./Create.svelte": "./resources/js/Pages/Create.svelte",
+	"./DarkMode.svelte": "./resources/js/Pages/DarkMode.svelte",
 	"./Error.svelte": "./resources/js/Pages/Error.svelte",
 	"./Layout.svelte": "./resources/js/Pages/Layout.svelte",
 	"./Links.svelte": "./resources/js/Pages/Links.svelte",
@@ -15447,7 +15633,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
 /******/ 	__webpack_require__.O(undefined, ["ui/static/css/app"], () => (__webpack_require__("./resources/js/app.js")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["ui/static/css/app"], () => (__webpack_require__("./resources/css/app.css")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["ui/static/css/app"], () => (__webpack_require__("./resources/css/app.scss")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
