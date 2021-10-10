@@ -1,6 +1,7 @@
 <script>
     import Layout from "./Layout.svelte";
-    import { page, useForm } from "@inertiajs/inertia-svelte";
+    import { useForm } from "@inertiajs/inertia-svelte";
+    import { route } from "../stores.js";
 
     let form = useForm({
         email: null,
@@ -8,7 +9,7 @@
     });
 
     function submit() {
-        $form.post("/login");
+        $form.post(route("auth.loginPost"));
     }
 </script>
 
@@ -67,7 +68,11 @@
                     </div>
                     <div class="field is-grouped">
                         <div class="control">
-                            <button type="submit" disabled={$form.processing} class="button is-link">
+                            <button
+                                type="submit"
+                                disabled={$form.processing}
+                                class="button is-link"
+                            >
                                 Submit
                             </button>
                         </div>

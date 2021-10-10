@@ -1,9 +1,10 @@
 <script>
     import { Inertia } from "@inertiajs/inertia";
     import { inertia, page } from "@inertiajs/inertia-svelte";
+    import { route } from "../stores.js"
 
     function logout() {
-        Inertia.post("/logout");
+        Inertia.post(route("auth.logout"));
     }
 </script>
 
@@ -14,17 +15,17 @@
 >
     <div class="navbar-brand">
         <div class="navbar-item">
-            <a use:inertia class="is-size-4" href="/">Linki</a>
+            <a use:inertia class="is-size-4" href="{route('index')}">Linki</a>
         </div>
     </div>
     <div class="navbar-item ml-auto">
         {#if $page.props.isAuthenticated}
-            <a href="/links/new" class="mr-3 button is-ghost" use:inertia>Post</a>
+            <a href="{route('links.new')}" class="mr-3 button is-ghost" use:inertia>Post</a>
             <form action="POST" on:submit|preventDefault={logout}>
                 <button type="submit" class="button is-ghost">Logout</button>
             </form>
         {:else}
-            <a href="/login" class="button is-ghost" use:inertia>Log in</a>
+            <a href="{route('auth.login')}" class="button is-ghost" use:inertia>Log in</a>
         {/if}
     </div>
 </nav>

@@ -1,6 +1,7 @@
 <script>
     import Layout from "./Layout.svelte";
     import { inertia, page, Link } from "@inertiajs/inertia-svelte";
+    import { route } from "../stores.js"
 </script>
 
 <svelte:head>
@@ -21,7 +22,7 @@
                         </div>
                         <div class="media-content">
                             <div class="content">
-                                <a href="/link/{link.ID}" use:inertia>
+                                <a href="{route('links.show', {'id': link.ID})}" use:inertia>
                                     <strong>{link.Title}</strong>
                                 </a>
                                 {#if link.Type === "link"}
