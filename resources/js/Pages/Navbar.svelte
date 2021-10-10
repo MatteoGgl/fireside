@@ -2,6 +2,7 @@
     import { Inertia } from "@inertiajs/inertia";
     import { inertia, page } from "@inertiajs/inertia-svelte";
     import { route } from "../stores.js"
+    import DarkMode from "./DarkMode.svelte"
 
     function logout() {
         Inertia.post(route("auth.logout"));
@@ -27,5 +28,6 @@
         {:else}
             <a href="{route('auth.login')}" class="button is-ghost" use:inertia>Log in</a>
         {/if}
+        <DarkMode />
     </div>
 </nav>

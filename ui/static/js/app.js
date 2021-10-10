@@ -4273,6 +4273,9 @@ function instance($$self, $$props, $$invalidate) {
   (0,svelte__WEBPACK_IMPORTED_MODULE_1__.onMount)(function () {
     applyTheme();
     window.matchMedia(DARK_PREFERENCE).addEventListener("change", applyTheme);
+    return function () {
+      return window.removeEventListener("change");
+    };
   });
   var THEMES = {
     DARK: "dark",
