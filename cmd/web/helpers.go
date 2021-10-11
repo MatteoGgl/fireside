@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/matteoggl/linki/internal/validator"
+	"github.com/matteoggl/fireside/internal/validator"
 )
 
 type contextKey string

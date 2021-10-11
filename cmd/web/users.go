@@ -4,8 +4,8 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/matteoggl/linki/internal/data"
-	"github.com/matteoggl/linki/internal/validator"
+	"github.com/matteoggl/fireside/internal/data"
+	"github.com/matteoggl/fireside/internal/validator"
 )
 
 

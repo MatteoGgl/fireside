@@ -5,7 +5,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/matteoggl/linki/internal/validator"
+	"github.com/matteoggl/fireside/internal/validator"
 	"golang.org/x/crypto/bcrypt"
 )
 

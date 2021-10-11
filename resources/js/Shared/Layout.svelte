@@ -1,5 +1,6 @@
 <script>
     import Navbar from "./Navbar.svelte";
+    import Sidebar from "./Sidebar.svelte";
 </script>
 
 <Navbar />
@@ -8,6 +9,8 @@
         <div class="col-span-2">
             <slot />
         </div>
-        <div class="col-span-1">Sidebar</div>
+        <div class="col-span-1">
+            <Sidebar />
+        </div>
     </main>
 </div>

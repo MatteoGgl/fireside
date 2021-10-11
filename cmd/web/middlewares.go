@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/matteoggl/linki/internal/data"
+	"github.com/matteoggl/fireside/internal/data"
 )
 
 func (app *application) logRequest(next http.Handler) http.Handler {

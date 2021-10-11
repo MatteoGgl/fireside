@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/matteoggl/linki/internal/data"
-	"github.com/matteoggl/linki/internal/validator"
+	"github.com/matteoggl/fireside/internal/data"
+	"github.com/matteoggl/fireside/internal/validator"
 )
 
 func (app *application) homeHandler(w http.ResponseWriter, r *http.Request) {

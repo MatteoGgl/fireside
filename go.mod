@@ -1,4 +1,4 @@
-module github.com/matteoggl/linki
+module github.com/matteoggl/fireside
 
 go 1.17
 

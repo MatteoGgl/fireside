@@ -19,7 +19,7 @@
 </svelte:head>
 
 <Layout>
-    <div class="px-6 py-4 bg-gray-100 dark:bg-gray-600">
+    <div class="px-6 py-4 rounded-md bg-gray-100 dark:bg-gray-600">
         <h1 class="text-4xl mb-6 dark:text-gray-300">Login</h1>
 
         <form on:submit|preventDefault={submit} action="POST">

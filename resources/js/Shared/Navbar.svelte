@@ -15,7 +15,7 @@
     aria-label="main navigation"
 >
     <a use:inertia class="text-2xl dark:text-gray-300" href={route("index")}>
-        Linki
+        <img src="/static/images/logo.png" alt="Fireside logo" class="h-12 w-12">
     </a>
     <div class="ml-auto flex items-center space-x-4">
         {#if $page.props.isAuthenticated}

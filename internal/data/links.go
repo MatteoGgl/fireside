@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/lib/pq"
-	"github.com/matteoggl/linki/internal/validator"
+	"github.com/matteoggl/fireside/internal/validator"
 )
 
 type Link struct {

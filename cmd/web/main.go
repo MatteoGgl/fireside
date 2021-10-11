@@ -14,7 +14,7 @@ import (
 	"github.com/golangcollege/sessions"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-	"github.com/matteoggl/linki/internal/data"
+	"github.com/matteoggl/fireside/internal/data"
 	"github.com/petaki/inertia-go"
 )
 
@@ -41,7 +41,7 @@ type application struct {
 }
 
 func main() {
-	logger := log.New(os.Stdout, "linki: ", log.Ldate|log.Ltime)
+	logger := log.New(os.Stdout, "fireside: ", log.Ldate|log.Ltime)
 
 	flag.Parse()
 
@@ -58,9 +58,9 @@ func main() {
 	rootTemplate := "./ui/app.tmpl"
 	inertiaManager := inertia.New(cfg.url, rootTemplate, version)
 
-	secret := os.Getenv("LINKI_SECRET")
+	secret := os.Getenv("FIRESIDE_SECRET")
 	if secret == "" {
-		logger.Fatal("LINKI_SECRET must not be empty")
+		logger.Fatal("FIRESIDE_SECRET must not be empty")
 	}
 	session := sessions.New([]byte(secret))
 	session.Lifetime = 12 * time.Hour
@@ -93,37 +93,37 @@ func initConfig(cfg *config) {
 		log.Fatal("error loading .env file")
 	}
 
-	port, err := strconv.Atoi(os.Getenv("LINKI_PORT"))
+	port, err := strconv.Atoi(os.Getenv("FIRESIDE_PORT"))
 	if err != nil {
 		log.Fatal(err)
 	}
 	cfg.port = port
 
-	cfg.url = os.Getenv("LINKI_URL")
+	cfg.url = os.Getenv("FIRESIDE_URL")
 	if cfg.url == "" {
 		cfg.url = fmt.Sprintf("http://localhost:%d", cfg.port)
 	}
 
-	cfg.env = os.Getenv("LINKI_ENV")
+	cfg.env = os.Getenv("FIRESIDE_ENV")
 	if cfg.env == "" {
 		cfg.env = "development"
 	}
 
-	cfg.db.dsn = os.Getenv("LINKI_DB_DSN")
+	cfg.db.dsn = os.Getenv("FIRESIDE_DB_DSN")
 
-	maxOpenConns, err := strconv.Atoi(os.Getenv("LINKI_DB_MAX_OPEN_CONNS"))
+	maxOpenConns, err := strconv.Atoi(os.Getenv("FIRESIDE_DB_MAX_OPEN_CONNS"))
 	if err != nil {
 		log.Fatal(err)
 	}
 	cfg.db.maxOpenConns = maxOpenConns
 
-	maxIdleConns, err := strconv.Atoi(os.Getenv("LINKI_DB_MAX_IDLE_CONNS"))
+	maxIdleConns, err := strconv.Atoi(os.Getenv("FIRESIDE_DB_MAX_IDLE_CONNS"))
 	if err != nil {
 		log.Fatal(err)
 	}
 	cfg.db.maxIdleConns = maxIdleConns
 
-	cfg.db.maxIdleTime = os.Getenv("LINKI_DB_MAX_IDLE_TIME")
+	cfg.db.maxIdleTime = os.Getenv("FIRESIDE_DB_MAX_IDLE_TIME")
 }
 
 func openDB(cfg config) (*sql.DB, error) {
