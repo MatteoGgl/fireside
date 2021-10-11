@@ -1,5 +1,6 @@
 <script>
-    import Layout from "./Layout.svelte";
+    import Layout from "../Shared/Layout.svelte";
+    import Input from "../Partials/Input.svelte";
     import { useForm } from "@inertiajs/inertia-svelte";
     import { route } from "../stores.js";
 
@@ -18,67 +19,42 @@
 </svelte:head>
 
 <Layout>
-    <main>
-        <div class="columns is-centered">
-            <div class="column is-6 has-background-white py-3">
-                <h1 class="title">Login</h1>
+    <div class="px-6 py-4 bg-gray-100 dark:bg-gray-600">
+        <h1 class="text-4xl mb-6 dark:text-gray-300">Login</h1>
 
-                <form on:submit|preventDefault={submit} action="POST">
-                    <div class="field">
-                        <label class="label" for="email">Email</label>
-                        <div class="control">
-                            <input
-                                id="email"
-                                name="email"
-                                class="input"
-                                type="email"
-                                placeholder="Your email"
-                                bind:value={$form.email}
-                                error="$form.errors.email"
-                            />
-                        </div>
-                        {#if $form.errors.email}
-                            <p class="help is-danger">
-                                {$form.errors.email}
-                            </p>
-                        {/if}
-                        {#if $form.errors.generic}
-                            <p class="help is-danger">
-                                {$form.errors.generic}
-                            </p>
-                        {/if}
-                    </div>
-                    <div class="field">
-                        <label class="label" for="password">Password</label>
-                        <div class="control">
-                            <input
-                                id="password"
-                                class="input"
-                                type="password"
-                                placeholder="Your password"
-                                bind:value={$form.password}
-                                error="$form.errors.password"
-                            />
-                        </div>
-                        {#if $form.errors.password}
-                            <p class="help is-danger">
-                                {$form.errors.password}
-                            </p>
-                        {/if}
-                    </div>
-                    <div class="field is-grouped">
-                        <div class="control">
-                            <button
-                                type="submit"
-                                disabled={$form.processing}
-                                class="button is-link"
-                            >
-                                Submit
-                            </button>
-                        </div>
-                    </div>
-                </form>
+        <form on:submit|preventDefault={submit} action="POST">
+            <div class="flex flex-col max-w-lg mt-6 space-y-5">
+                <Input
+                    type="email"
+                    form={$form}
+                    name="email"
+                    label="Email"
+                    placeholder="test@example.com"
+                    required={true}
+                />
+
+                {#if $form.errors.generic}
+                    <p class="help is-danger">
+                        {$form.errors.generic}
+                    </p>
+                {/if}
+
+                <Input
+                    type="password"
+                    form={$form}
+                    name="password"
+                    label="Password"
+                    placeholder="Enter your secret password"
+                    required={true}
+                />
+                <button
+                    type="submit"
+                    disabled={$form.processing}
+                    class="py-2 px-4 text-center rounded-md text-white bg-blue-500 dark:bg-indigo-500 hover:bg-blue-600 dark:hover:bg-indigo-600 mr-auto"
+                >
+                    Submit
+                </button>
             </div>
-        </div>
-    </main>
+        </form>
+    </div>
 </Layout>

@@ -1,5 +1,7 @@
 <script>
-    import Layout from "./Layout.svelte";
+    import Layout from "../Shared/Layout.svelte";
+    import Input from "../Partials/Input.svelte";
+    import Textarea from "../Partials/Textarea.svelte";
     import { useForm } from "@inertiajs/inertia-svelte";
     import { route } from "../stores.js";
 
@@ -33,119 +35,65 @@
 </svelte:head>
 
 <Layout>
-    <main>
-        <div class="columns is-centered">
-            <div class="column is-6 has-background-white py-3">
-                <h1 class="title">Create new link</h1>
+    <div class="px-6 py-4 bg-gray-100 dark:bg-gray-600">
+        <h1 class="text-4xl mb-6 dark:text-gray-300">Create new link</h1>
 
-                <div class="tabs is-boxed">
-                    <!-- svelte-ignore a11y-missing-attribute -->
-                    <ul>
-                        <li class={tab === "link" ? "is-active" : ""}>
-                            <a on:click|preventDefault={otherTab}> Link </a>
-                        </li>
-                        <li class={tab === "text" ? "is-active" : ""}>
-                            <a on:click|preventDefault={otherTab}> Text </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <form on:submit|preventDefault={submit} action="POST">
-                    <div class="field">
-                        <label class="label" for="title">Title *</label>
-                        <div class="control">
-                            <input
-                                id="title"
-                                name="title"
-                                class="input"
-                                type="text"
-                                placeholder="My awesome new link"
-                                bind:value={$form.title}
-                                error="$form.errors.title"
-                            />
-                        </div>
-                        {#if $form.errors.title}
-                            <p class="help is-danger">
-                                {$form.errors.title}
-                            </p>
-                        {/if}
-                    </div>
-
-                    {#if tab === "link"}
-                        <div class="field">
-                            <label class="label" for="title">URL *</label>
-                            <div class="control">
-                                <input
-                                    id="url"
-                                    name="url"
-                                    class="input"
-                                    type="url"
-                                    placeholder="https://..."
-                                    bind:value={$form.url}
-                                    error="$form.errors.url"
-                                />
-                            </div>
-                            {#if $form.errors.url}
-                                <p class="help is-danger">
-                                    {$form.errors.url}
-                                </p>
-                            {/if}
-                        </div>
-                    {:else if tab === "text"}
-                        <div class="field">
-                            <label class="label" for="content">Content *</label>
-                            <div class="control">
-                                <textarea
-                                    class="textarea"
-                                    name="content"
-                                    id="content"
-                                    rows="5"
-                                    bind:value={$form.content}
-                                />
-                            </div>
-                            {#if $form.errors.content}
-                                <p class="help is-danger">
-                                    {$form.errors.content}
-                                </p>
-                            {/if}
-                        </div>
-                    {/if}
-
-                    <div class="field">
-                        <label class="label" for="tags">
-                            Tags (separated by comma)
-                        </label>
-                        <div class="control">
-                            <input
-                                id="tags"
-                                name="tags"
-                                class="input"
-                                type="text"
-                                placeholder="first tag, second tag, third tag"
-                                bind:value={$form.tags}
-                                error="$form.errors.tags"
-                            />
-                        </div>
-                        {#if $form.errors.tags}
-                            <p class="help is-danger">
-                                {$form.errors.tags}
-                            </p>
-                        {/if}
-                    </div>
-
-                    <div class="field is-grouped">
-                        <div class="control">
-                            <button
-                                type="submit"
-                                disabled={$form.processing}
-                                class="button is-link"
-                            >
-                                Submit
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+        <div class="flex space-x-4 border-b-2 dark:border-gray-500 items-end mb-4">
+            <button
+                class="-mb-px pb-2 px-3 {tab === 'link'
+                    ? 'font-bold text-blue-500 dark:text-indigo-500 border-b-2 border-blue-500 dark:border-indigo-500'
+                    : 'font-normal text-black hover:text-blue-500 dark:text-gray-300'}"
+                on:click={otherTab}>Link</button
+            >
+            <button
+                class="-mb-px pb-2 px-3 {tab === 'text'
+                    ? 'font-bold text-blue-500 dark:text-indigo-500 border-b-2 border-blue-500 dark:border-indigo-500'
+                    : 'font-normal text-black hover:text-blue-500 dark:text-gray-300'}"
+                on:click={otherTab}>Text</button
+            >
         </div>
-    </main>
+        <form on:submit|preventDefault={submit} action="POST">
+            <div class="flex flex-col max-w-lg mt-6 space-y-5">
+                <Input
+                    type="text"
+                    form={$form}
+                    name="title"
+                    label="Title"
+                    placeholder="My awesome new link"
+                    required={true}
+                />
+                {#if tab === "link"}
+                    <Input
+                        type="url"
+                        form={$form}
+                        name="url"
+                        label="URL"
+                        placeholder="https://..."
+                        required={true}
+                    />
+                {:else}
+                    <Textarea
+                        form={$form}
+                        name="content"
+                        label="Contents"
+                        required={true}
+                    />
+                {/if}
+                <Input
+                    type="text"
+                    form={$form}
+                    name="tags"
+                    label="Tags (separated by comma)"
+                    placeholder="first tag, second tag, third tag..."
+                />
+                <button
+                    type="submit"
+                    disabled={$form.processing}
+                    class="py-2 px-4 text-center rounded-md text-white bg-blue-500 dark:bg-indigo-500 hover:bg-blue-600 dark:hover:bg-indigo-600 mr-auto"
+                >
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
 </Layout>

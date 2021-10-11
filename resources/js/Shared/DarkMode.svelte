@@ -7,7 +7,7 @@
             .matchMedia(DARK_PREFERENCE)
             .addEventListener("change", applyTheme);
 
-        return () => window.removeEventListener("change");
+        return () => window.removeEventListener("change", applyTheme);
     });
 
     const STORAGE_KEY = "theme";
@@ -39,15 +39,26 @@
         currentTheme = localStorage.getItem(STORAGE_KEY) ?? preferredTheme;
 
         if (currentTheme === THEMES.DARK) {
-            document.body.classList.remove(THEMES.LIGHT);
-            document.body.classList.add(THEMES.DARK);
+            document.documentElement.classList.remove(THEMES.LIGHT);
+            document.documentElement.classList.add(THEMES.DARK);
         } else {
-            document.body.classList.remove(THEMES.DARK);
-            document.body.classList.add(THEMES.LIGHT);
+            document.documentElement.classList.remove(THEMES.DARK);
+            document.documentElement.classList.add(THEMES.LIGHT);
         }
     };
 </script>
 
-<button class="button" on:click={toggleTheme}
-    >{currentTheme === THEMES.DARK ? "Light" : "Dark"}</button
->
+<div class="relative inline-block w-10 align-middle select-none">
+    <input
+        id="toggle"
+        name="toggle"
+        type="checkbox"
+        on:click={toggleTheme}
+        checked={currentTheme === THEMES.DARK}
+        class="checked:bg-gray-500 outline-none focus:outline-none right-4 checked:right-0 duration-200 ease-in absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
+    />
+    <label
+        for="toggle"
+        class="block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"
+    />
+</div>

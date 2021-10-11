@@ -16,7 +16,7 @@ func (app *application) homeHandler(w http.ResponseWriter, r *http.Request) {
 		app.serverErrorResponse(w, r, err)
 	}
 
-	err = app.inertia.Render(w, r, "Links", map[string]interface{}{
+	err = app.inertia.Render(w, r, "Index", map[string]interface{}{
 		"links": links,
 	})
 
