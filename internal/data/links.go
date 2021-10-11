@@ -20,6 +20,7 @@ package data
 
 import (
 	"database/sql"
+	"errors"
 	"time"
 
 	"github.com/lib/pq"
@@ -52,7 +53,7 @@ type LinkModel struct {
 	DB *sql.DB
 }
 
-func (l *LinkModel) All() ([]*Link, error) {
+func (l LinkModel) All() ([]*Link, error) {
 	stmt := `SELECT id, title, type, url, content, likes, tags, created_at
 	FROM links
 	ORDER BY created_at DESC`
@@ -116,10 +117,41 @@ func (l LinkModel) Get(id int64) (*Link, error) {
 	)
 
 	if err != nil {
-		return nil, err
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, ErrRecordNotFound
+		default:
+			return nil, err
+		}
 	}
 
 	return &link, nil
+}
+
+func (l LinkModel) Delete(id int64) error {
+	if id < 1 {
+		return ErrRecordNotFound
+	}
+
+	stmt := `
+	DELETE FROM links
+	WHERE id = $1`
+
+	res, err := l.DB.Exec(stmt, id)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return ErrRecordNotFound
+	}
+
+	return nil
 }
 
 func (l LinkModel) ByTag(tag string) ([]*Link, error) {

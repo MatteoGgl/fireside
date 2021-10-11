@@ -38,21 +38,21 @@
     <div class="px-6 py-4 rounded-md bg-gray-100 dark:bg-gray-600">
         <h1 class="text-4xl mb-6 dark:text-gray-300">Create new link</h1>
 
-        <div class="flex space-x-4 border-b-2 dark:border-gray-500 items-end mb-4">
+        <div class="flex space-x-4 border-b-2 dark:border-indigo-300 items-end mb-4">
             <button
                 class="-mb-px pb-2 px-3 {tab === 'link'
-                    ? 'font-bold text-blue-500 dark:text-indigo-500 border-b-2 border-blue-500 dark:border-indigo-500'
+                    ? 'font-bold text-blue-500 dark:text-indigo-400 border-b-2 border-blue-500 dark:border-indigo-500'
                     : 'font-normal text-black hover:text-blue-500 dark:text-gray-300'}"
                 on:click={otherTab}>Link</button
             >
             <button
                 class="-mb-px pb-2 px-3 {tab === 'text'
-                    ? 'font-bold text-blue-500 dark:text-indigo-500 border-b-2 border-blue-500 dark:border-indigo-500'
+                    ? 'font-bold text-blue-500 dark:text-indigo-400 border-b-2 border-blue-500 dark:border-indigo-500'
                     : 'font-normal text-black hover:text-blue-500 dark:text-gray-300'}"
                 on:click={otherTab}>Text</button
             >
         </div>
-        <form on:submit|preventDefault={submit} action="POST">
+        <form on:submit|preventDefault={submit}>
             <div class="flex flex-col max-w-lg mt-6 space-y-5">
                 <Input
                     type="text"

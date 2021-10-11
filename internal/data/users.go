@@ -100,7 +100,7 @@ func (um *UserModel) Get(id int) (*User, error) {
 
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, ErrNoRecord
+			return nil, ErrRecordNotFound
 		} else {
 			return nil, err
 		}

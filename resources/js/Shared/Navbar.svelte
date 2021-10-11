@@ -21,15 +21,15 @@
         {#if $page.props.isAuthenticated}
             <a
                 href={route("links.new")}
-                class="text-sm hover:text-blue-500 hover:underline dark:text-gray-300 dark:hover:text-blue-500"
+                class="text-sm hover:text-blue-500 hover:underline dark:text-gray-300 dark:hover:text-indigo-400"
                 use:inertia
             >
                 New post
             </a>
-            <form action="POST" on:submit|preventDefault={logout}>
+            <form on:submit|preventDefault={logout}>
                 <button
                     type="submit"
-                    class="text-sm hover:text-blue-500 hover:underline dark:text-gray-300 dark:hover:text-blue-500"
+                    class="text-sm hover:text-blue-500 hover:underline dark:text-gray-300 dark:hover:text-indigo-400"
                 >
                     Logout
                 </button>
@@ -37,7 +37,7 @@
         {:else}
             <a
                 href={route("auth.login")}
-                class="text-sm hover:text-blue-500 hover:underline dark:text-gray-300 dark:hover:text-blue-500"
+                class="text-sm hover:text-blue-500 hover:underline dark:text-gray-300 dark:hover:text-indigo-400"
                 use:inertia
             >
                 Log in

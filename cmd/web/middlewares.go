@@ -68,7 +68,7 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 		}
 
 		_, err := app.models.Users.Get(app.session.GetInt(r, "authenticatedUserID"))
-		if errors.Is(err, data.ErrNoRecord) {
+		if errors.Is(err, data.ErrRecordNotFound) {
 			app.session.Remove(r, "authenticatedUserID")
 			app.inertia.Share(string(ctxKeyIsAuthenticated), false)
 			next.ServeHTTP(w, r)

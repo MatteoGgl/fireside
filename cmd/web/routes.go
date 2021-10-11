@@ -63,6 +63,7 @@ func (app *application) routes() *httprouter.Router {
 		newRoute("links.new", http.MethodGet, "/link/new", standardMiddleware.Append(app.requireAuthentication), app.createHandler),
 		newRoute("links.store", http.MethodPost, "/link/new", standardMiddleware.Append(app.requireAuthentication), app.storeHandler),
 		newRoute("links.show", http.MethodGet, "/links/:id", standardMiddleware, app.showHandler),
+		newRoute("links.destroy", http.MethodDelete, "/links/:id", standardMiddleware.Append(app.requireAuthentication), app.destroyHandler),
 		newRoute("links.tag", http.MethodGet, "/tags/:tag", standardMiddleware, app.byTagHandler),
 		newRoute("auth.login", http.MethodGet, "/login", standardMiddleware, app.loginFormHandler),
 		newRoute("auth.loginPost", http.MethodPost, "/login", standardMiddleware, app.loginHandler),

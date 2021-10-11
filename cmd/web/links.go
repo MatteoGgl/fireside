@@ -20,6 +20,7 @@ package main
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -53,8 +54,12 @@ func (app *application) showHandler(w http.ResponseWriter, r *http.Request) {
 
 	link, err := app.models.Links.Get(id)
 	if err != nil {
-		//TODO Not found response for "sql: no rows in result set"
-		app.serverErrorResponse(w, r, err)
+		switch {
+		case errors.Is(err, data.ErrRecordNotFound):
+			app.notFoundResponse(w, r)
+		default:
+			app.serverErrorResponse(w, r, err)
+		}
 		return
 	}
 
@@ -122,6 +127,28 @@ func (app *application) storeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Location", fmt.Sprintf("/links/%d", link.ID))
+	w.WriteHeader(http.StatusSeeOther)
+}
+
+func (app *application) destroyHandler(w http.ResponseWriter, r *http.Request) {
+	id, err := app.redIDParam(r)
+	if err != nil {
+		app.notFoundResponse(w, r)
+		return
+	}
+
+	err = app.models.Links.Delete(id)
+	if err != nil {
+		switch {
+		case errors.Is(err, data.ErrRecordNotFound):
+			app.notFoundResponse(w, r)
+		default:
+			app.serverErrorResponse(w, r, err)
+		}
+		return
+	}
+
+	w.Header().Set("Location", "/")
 	w.WriteHeader(http.StatusSeeOther)
 }
 

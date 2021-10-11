@@ -24,7 +24,6 @@ import (
 )
 
 var (
-	ErrNoRecord           = errors.New("no matching record found")
 	ErrRecordNotFound     = errors.New("record not found")
 	ErrInvalidCredentials = errors.New("invalid credentials")
 )
