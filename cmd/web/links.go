@@ -127,6 +127,12 @@ func (app *application) storeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	tags = append(tags, input.Type)
 
+	if input.Type == "text" {
+		input.URL = ""
+	} else {
+		input.Content = ""
+	}
+
 	link := &data.Link{
 		Title:   input.Title,
 		Type:    input.Type,
