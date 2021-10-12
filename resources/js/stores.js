@@ -32,7 +32,22 @@ export const route = (name, params = {}) => {
 
     var path = route.path;
     Object.entries(params).forEach(([key, val]) => {
-        path = path.replace(":" + key, val)
+        if (path.indexOf(":" + key) !== -1) {
+            delete params[key];
+            path = path.replace(":" + key, val)
+        }
     });
+
+    var query_started = false;
+    Object.entries(params).forEach(([key, val]) => {
+        let encoded_val = encodeURIComponent(val);
+        if (!query_started) {
+            path += "?" + key + "=" + encoded_val;
+            query_started = true;
+        } else {
+            path += "&" + key + "=" + encoded_val;
+        }
+    })
+
     return path;
 };

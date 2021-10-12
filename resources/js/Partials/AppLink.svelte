@@ -102,8 +102,8 @@
         <div class="flex items-center space-x-3 mt-4">
             {#each link.Tags as tag}
                 <Link
-                    href={route("links.tag", {
-                        tag: tag,
+                    href={route("index", {
+                        tags: tag,
                     })}
                 >
                     <span

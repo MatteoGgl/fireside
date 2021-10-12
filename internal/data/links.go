@@ -21,6 +21,7 @@ package data
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/lib/pq"
@@ -53,21 +54,28 @@ type LinkModel struct {
 	DB *sql.DB
 }
 
-func (l LinkModel) All() ([]*Link, error) {
-	stmt := `SELECT id, title, type, url, content, likes, tags, created_at
-	FROM links
-	ORDER BY created_at DESC`
+func (l LinkModel) All(title string, tags []string, filters Filters) ([]*Link, Pagedata, error) {
 
-	rows, err := l.DB.Query(stmt)
+	stmt := fmt.Sprintf(`SELECT count(*) OVER(), id, title, type, url, content, likes, tags, created_at
+	FROM links
+	WHERE (to_tsvector('simple', title) @@ plainto_tsquery('simple', $1) OR $1 = '')
+	AND (tags @> $2 OR $2 = '{}')
+	ORDER BY %s %s, id DESC
+	LIMIT $3 OFFSET $4`, filters.sortColumn(), filters.sortDirection())
+
+	rows, err := l.DB.Query(stmt, title, pq.Array(tags), filters.limit(), filters.offset())
 	if err != nil {
-		return nil, err
+		return nil, Pagedata{}, err
 	}
 	defer rows.Close()
 
+	totalRecords := 0
 	links := []*Link{}
+
 	for rows.Next() {
 		l := &Link{}
 		err = rows.Scan(
+			&totalRecords,
 			&l.ID,
 			&l.Title,
 			&l.Type,
@@ -78,17 +86,19 @@ func (l LinkModel) All() ([]*Link, error) {
 			&l.CreatedAt,
 		)
 		if err != nil {
-			return nil, err
+			return nil, Pagedata{}, err
 		}
 
 		links = append(links, l)
 	}
 
 	if err = rows.Err(); err != nil {
-		return nil, err
+		return nil, Pagedata{}, err
 	}
 
-	return links, nil
+	pagedata := calculatePagedata(totalRecords, filters.Page, filters.PageSize)
+
+	return links, pagedata, nil
 }
 
 func (l LinkModel) Insert(link *Link) error {

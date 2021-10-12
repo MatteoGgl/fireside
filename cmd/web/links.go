@@ -30,13 +30,36 @@ import (
 )
 
 func (app *application) homeHandler(w http.ResponseWriter, r *http.Request) {
-	links, err := app.models.Links.All()
+	var input struct {
+		Title string
+		Tags  []string
+		data.Filters
+	}
+
+	v := validator.New()
+
+	qs := r.URL.Query()
+
+	input.Title = app.readString(qs, "title", "")
+	input.Tags = app.readCSV(qs, "tags", []string{})
+	input.Filters.Page = app.readInt(qs, "page", 1, v)
+	input.Filters.PageSize = app.readInt(qs, "page_size", 10, v)
+	input.Filters.Sort = app.readString(qs, "sort", "-created_at")
+	input.Filters.SortSafelist = []string{"created_at", "-created_at"}
+
+	if data.ValidateFilters(v, input.Filters); !v.Valid() {
+		app.serverErrorResponse(w, r, errors.New("validation error"))
+		return
+	}
+
+	links, pagedata, err := app.models.Links.All(input.Title, input.Tags, input.Filters)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
 
 	err = app.inertia.Render(w, r, "Index", map[string]interface{}{
-		"links": links,
+		"links":    links,
+		"pagedata": pagedata,
 	})
 
 	if err != nil {
@@ -150,22 +173,4 @@ func (app *application) destroyHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Location", "/")
 	w.WriteHeader(http.StatusSeeOther)
-}
-
-func (app *application) byTagHandler(w http.ResponseWriter, r *http.Request) {
-	tag := app.readString(r, "tag", "all")
-
-	links, err := app.models.Links.ByTag(tag)
-	if err != nil {
-		app.serverErrorResponse(w, r, err)
-	}
-
-	err = app.inertia.Render(w, r, "Links", map[string]interface{}{
-		"links": links,
-	})
-
-	if err != nil {
-		app.serverErrorResponse(w, r, err)
-		return
-	}
 }
