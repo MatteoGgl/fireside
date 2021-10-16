@@ -12,6 +12,15 @@
 <Layout>
     {#each $page.props.links as link (link.ID)}
         <AppLink {link} />
+    {:else}
+        <div class="px-6 py-4 rounded-md bg-gray-100 dark:bg-gray-600">
+            <h1 class="text-2xl mb-6 dark:text-gray-300">
+                No results available.
+            </h1>
+        </div>
     {/each}
-    <Pager />
+
+    {#if $page.props.links.length !== 0}
+        <Pager />
+    {/if}
 </Layout>

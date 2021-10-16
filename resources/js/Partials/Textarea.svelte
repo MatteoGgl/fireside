@@ -19,7 +19,7 @@
         {name}
         rows="5"
         bind:value={form[name]}
-        class="mt-3 rounded-lg border-transparent flex-1 appearance-none border border-gray-300 dark:border-transparent w-full py-2 px-4 bg-white dark:bg-gray-500 text-gray-700 dark:text-gray-300 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-indigo-500 focus:border-transparent"
+        class="mt-3 rounded-lg border-transparent flex-1 appearance-none border border-gray-300 dark:border-transparent w-full py-2 px-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-indigo-500 focus:border-transparent"
     />
     {#if form.errors[name]}
         <p class="text-sm text-red-500 dark:text-red-400">

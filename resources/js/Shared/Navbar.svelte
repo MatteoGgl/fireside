@@ -3,6 +3,7 @@
     import { inertia, page } from "@inertiajs/inertia-svelte";
     import { route } from "../stores.js";
     import DarkMode from "./DarkMode.svelte";
+    import Search from "../Partials/Search.svelte";
 
     function logout() {
         Inertia.post(route("auth.logout"));
@@ -14,9 +15,12 @@
     role="navigation"
     aria-label="main navigation"
 >
-    <a use:inertia class="text-2xl dark:text-gray-300" href={route("index")}>
+    <a use:inertia class="text-2xl dark:text-gray-300 mr-7" href={route("index")}>
         <img src="/static/images/logo.png" alt="Fireside logo" class="h-12 w-12">
     </a>
+
+    <Search />
+
     <div class="ml-auto flex items-center space-x-4">
         {#if $page.props.isAuthenticated}
             <a
