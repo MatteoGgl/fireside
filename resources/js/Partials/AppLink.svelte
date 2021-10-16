@@ -100,6 +100,9 @@
             </p>
         {/if}
         <div class="flex items-center space-x-3 mt-4">
+            <span class="text-xs text-gray-500 dark:text-gray-300">
+                {link.HumanCreatedAt}
+            </span>
             {#each link.Tags as tag}
                 <Link
                     href={route("index", {
@@ -113,9 +116,6 @@
                     </span>
                 </Link>
             {/each}
-            <span class="text-xs text-gray-500">
-                {link.CreatedAt}
-            </span>
         </div>
         {#if $page.props.isAuthenticated}
             <div

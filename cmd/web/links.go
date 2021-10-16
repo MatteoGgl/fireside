@@ -155,6 +155,8 @@ func (app *application) storeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	link.FormatCreatedAt()
+
 	w.Header().Set("Location", fmt.Sprintf("/links/%d", link.ID))
 	w.WriteHeader(http.StatusSeeOther)
 }

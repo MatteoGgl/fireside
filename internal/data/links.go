@@ -29,14 +29,15 @@ import (
 )
 
 type Link struct {
-	ID        int64
-	Title     string
-	Type      string
-	URL       sql.NullString
-	Content   sql.NullString
-	Likes     int64
-	Tags      []string
-	CreatedAt time.Time
+	ID             int64
+	Title          string
+	Type           string
+	URL            sql.NullString
+	Content        sql.NullString
+	Likes          int64
+	Tags           []string
+	CreatedAt      time.Time
+	HumanCreatedAt string
 }
 
 func ValidateLink(v *validator.Validator, link *Link) {
@@ -89,6 +90,8 @@ func (l LinkModel) All(title string, tags []string, filters Filters) ([]*Link, P
 			return nil, Pagedata{}, err
 		}
 
+		l.FormatCreatedAt()
+
 		links = append(links, l)
 	}
 
@@ -135,6 +138,8 @@ func (l LinkModel) Get(id int64) (*Link, error) {
 		}
 	}
 
+	link.FormatCreatedAt()
+
 	return &link, nil
 }
 
@@ -164,41 +169,6 @@ func (l LinkModel) Delete(id int64) error {
 	return nil
 }
 
-func (l LinkModel) ByTag(tag string) ([]*Link, error) {
-	stmt := `SELECT id, title, type, url, content, likes, tags, created_at
-	FROM links
-	WHERE $1 = ANY (tags)
-	ORDER BY created_at DESC`
-
-	rows, err := l.DB.Query(stmt, tag)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	links := []*Link{}
-	for rows.Next() {
-		l := &Link{}
-		err = rows.Scan(
-			&l.ID,
-			&l.Title,
-			&l.Type,
-			&l.URL,
-			&l.Content,
-			&l.Likes,
-			pq.Array(&l.Tags),
-			&l.CreatedAt,
-		)
-		if err != nil {
-			return nil, err
-		}
-
-		links = append(links, l)
-	}
-
-	if err = rows.Err(); err != nil {
-		return nil, err
-	}
-
-	return links, nil
+func (l *Link) FormatCreatedAt() {
+	l.HumanCreatedAt = l.CreatedAt.Format("02 Jan at 15:04")
 }
