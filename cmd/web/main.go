@@ -102,7 +102,9 @@ func main() {
 	}
 
 	err = app.serve()
-	logger.Fatal().Err(err).Msg("")
+	if err != nil {
+		logger.Fatal().Err(err).Msg("")
+	}
 }
 
 func initConfig(cfg *config) {
