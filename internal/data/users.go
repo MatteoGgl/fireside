@@ -27,6 +27,10 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+var (
+	ErrDuplicateEmail = errors.New("duplicate email")
+)
+
 type User struct {
 	ID             int64
 	Email          string
@@ -36,6 +40,7 @@ type User struct {
 
 func ValidateUser(v *validator.Validator, user *User) {
 	v.Check(user.Email != "", "email", "Email must be provided")
+	v.Check(validator.Matches(user.Email, validator.EmailRX), "email", "Email must be a valid email address")
 	v.Check(len(user.HashedPassword) > 0, "password", "A password must be provided")
 }
 
@@ -54,7 +59,12 @@ func (u *UserModel) Insert(email, password string) error {
 
 	_, err = u.DB.Exec(stmt, email, string(hashedPassword))
 	if err != nil {
-		return err
+		switch {
+		case err.Error() == `pq: duplicate key value violates unique constraint "users_email_key"`:
+			return ErrDuplicateEmail
+		default:
+			return err
+		}
 	}
 
 	return nil
