@@ -1,0 +1,23 @@
+[Unit]
+Description=Fireside service
+
+After=postgresql.service
+After=network-online.target
+Wants=network-online.target
+
+StartLimitIntervalSec=600
+StartLimitBurst=5
+
+[Service]
+Type=exec
+User=fireside
+Group=fireside
+EnvironmentFile=/etc/environment
+WorkingDirectory=/home/fireside
+ExecStart=/home/fireside/bin/fireside
+
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
