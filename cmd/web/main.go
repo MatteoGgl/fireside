@@ -23,7 +23,6 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	"net/http"
 	"os"
 	"strconv"
 	"time"
@@ -102,20 +101,7 @@ func main() {
 		session: session,
 	}
 
-	srv := &http.Server{
-		Addr:         fmt.Sprintf(":%d", cfg.port),
-		Handler:      app.routes(),
-		IdleTimeout:  time.Minute,
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 30 * time.Second,
-	}
-
-	logger.Info().
-		Str("env", cfg.env).
-		Str("addr", srv.Addr).
-		Msg("starting server")
-
-	err = srv.ListenAndServe()
+	err = app.serve()
 	logger.Fatal().Err(err).Msg("")
 }
 
