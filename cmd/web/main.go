@@ -36,7 +36,10 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-const version = "0.1.0"
+var (
+	version   string
+	buildTime string
+)
 
 type config struct {
 	url  string
@@ -61,11 +64,19 @@ type application struct {
 func main() {
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 
+	displayVersion := flag.Bool("version", false, "Display version and exit")
+	dotenvPath := flag.String("env", "./.env", "Sets the .env path")
 	flag.Parse()
+
+	if *displayVersion {
+		fmt.Printf("Version:\t%s\n", version)
+		fmt.Printf("Build time:\t%s\n", buildTime)
+		os.Exit(0)
+	}
 
 	var cfg config
 
-	initConfig(&cfg)
+	initConfig(&cfg, dotenvPath)
 
 	var logger zerolog.Logger
 	if cfg.env == "development" {
@@ -107,8 +118,8 @@ func main() {
 	}
 }
 
-func initConfig(cfg *config) {
-	err := godotenv.Load()
+func initConfig(cfg *config, dotenvPath *string) {
+	err := godotenv.Load(*dotenvPath)
 	if err != nil {
 		log.Fatal().Msg("error loading .env file")
 	}
