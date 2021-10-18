@@ -25,7 +25,10 @@ import (
 )
 
 func (app *application) logError(r *http.Request, err error) {
-	app.logger.Println(err)
+	app.logger.Error().Err(err).
+		Str("request_method", r.Method).
+		Str("request_url", r.URL.String()).
+		Msg("")
 }
 
 func (app *application) errorResponse(w http.ResponseWriter, r *http.Request, status int, message interface{}) {
@@ -44,7 +47,7 @@ func (app *application) errorResponse(w http.ResponseWriter, r *http.Request, st
 func (app *application) serverErrorResponse(w http.ResponseWriter, r *http.Request, err error) {
 	if app.config.env == "development" {
 		trace := fmt.Sprintf("%s\n%s", err.Error(), debug.Stack())
-		app.logger.Output(2, trace)
+		app.logger.Trace().Msg(trace)
 	}
 	app.logError(r, err)
 

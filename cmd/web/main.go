@@ -23,7 +23,6 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -34,6 +33,8 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/matteoggl/fireside/internal/data"
 	"github.com/petaki/inertia-go"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 const version = "0.1.0"
@@ -53,13 +54,13 @@ type config struct {
 type application struct {
 	config  config
 	inertia *inertia.Inertia
-	logger  *log.Logger
+	logger  *zerolog.Logger
 	models  data.Models
 	session *sessions.Session
 }
 
 func main() {
-	logger := log.New(os.Stdout, "fireside: ", log.Ldate|log.Ltime)
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 
 	flag.Parse()
 
@@ -67,9 +68,18 @@ func main() {
 
 	initConfig(&cfg)
 
+	var logger zerolog.Logger
+	if cfg.env == "development" {
+		zerolog.SetGlobalLevel(zerolog.TraceLevel)
+		logger = zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr}).With().Timestamp().Logger()
+	} else {
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
+		logger = zerolog.New(os.Stderr).With().Timestamp().Logger()
+	}
+
 	db, err := openDB(cfg)
 	if err != nil {
-		logger.Fatal(err)
+		logger.Fatal().Err(err).Msg("")
 	}
 	defer db.Close()
 
@@ -78,7 +88,7 @@ func main() {
 
 	secret := os.Getenv("FIRESIDE_SECRET")
 	if secret == "" {
-		logger.Fatal("FIRESIDE_SECRET must not be empty")
+		logger.Fatal().Msg("FIRESIDE_SECRET must not be empty")
 	}
 	session := sessions.New([]byte(secret))
 	session.Lifetime = 12 * time.Hour
@@ -87,7 +97,7 @@ func main() {
 	app := &application{
 		config:  cfg,
 		inertia: inertiaManager,
-		logger:  logger,
+		logger:  &logger,
 		models:  data.NewModels(db),
 		session: session,
 	}
@@ -100,20 +110,24 @@ func main() {
 		WriteTimeout: 30 * time.Second,
 	}
 
-	logger.Printf("starting %s server on %s", cfg.env, srv.Addr)
+	logger.Info().
+		Str("env", cfg.env).
+		Str("addr", srv.Addr).
+		Msg("starting server")
+
 	err = srv.ListenAndServe()
-	logger.Fatal(err)
+	logger.Fatal().Err(err).Msg("")
 }
 
 func initConfig(cfg *config) {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("error loading .env file")
+		log.Fatal().Msg("error loading .env file")
 	}
 
 	port, err := strconv.Atoi(os.Getenv("FIRESIDE_PORT"))
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err).Msg("")
 	}
 	cfg.port = port
 
@@ -131,13 +145,13 @@ func initConfig(cfg *config) {
 
 	maxOpenConns, err := strconv.Atoi(os.Getenv("FIRESIDE_DB_MAX_OPEN_CONNS"))
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err).Msg("")
 	}
 	cfg.db.maxOpenConns = maxOpenConns
 
 	maxIdleConns, err := strconv.Atoi(os.Getenv("FIRESIDE_DB_MAX_IDLE_CONNS"))
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err).Msg("")
 	}
 	cfg.db.maxIdleConns = maxIdleConns
 

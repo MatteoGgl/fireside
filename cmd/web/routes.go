@@ -78,7 +78,7 @@ func (app *application) routes() *httprouter.Router {
 
 	r, err := json.Marshal(routes)
 	if err != nil {
-		app.logger.Fatal("routes cannot be shared")
+		app.logger.Fatal().Msg("routes cannot be shared")
 	}
 	app.inertia.Share("routes", string(r))
 

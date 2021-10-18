@@ -29,7 +29,12 @@ import (
 
 func (app *application) logRequest(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		app.logger.Printf("%s - %s %s %s", r.RemoteAddr, r.Proto, r.Method, r.URL.RequestURI())
+		app.logger.Info().
+			Str("remote_addr", r.RemoteAddr).
+			Str("request_uri", r.URL.RequestURI()).
+			Str("protocol", r.Proto).
+			Str("method", r.Method).
+			Msg("")
 		next.ServeHTTP(w, r)
 	})
 }
