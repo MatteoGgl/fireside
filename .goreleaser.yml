@@ -2,7 +2,7 @@ project_name: fireside
 builds:
   - 
     main: ./cmd/web
-    ldflags: -s -w -X main.buildTime={{ .Date }} -X main.version={{ .Version }}-{{ .ShortCommit }}
+    ldflags: -s -w -X main.buildTime={{ .Date }} -X main.version={{ .Version }}+{{ .ShortCommit }}
     env:
       - CGO_ENABLED=0
     goos:
