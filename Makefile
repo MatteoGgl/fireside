@@ -87,4 +87,4 @@ build/snapshot: mix/prod
 ## build/release: build a release using goreleaser
 .PHONY: build/release
 build/release: audit mix/prod
-	goreleaser release
+	goreleaser release --rm-dist
